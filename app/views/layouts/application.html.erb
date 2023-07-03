@@ -13,6 +13,9 @@
     <%= render 'layouts/header' %>
       <main>
         <%= flash[:notice] %>
+        <div class="d-flex justify-content-center mb-2">
+      　　  <%= render 'layouts/serach' %>
+        </div>
         <%= yield %>
       </main>
     <%= render 'layouts/footer' %>
