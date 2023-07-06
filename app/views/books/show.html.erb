@@ -1,3 +1,6 @@
+<div class="d-flex justify-content-center mb-2">
+  <%= render 'layouts/serach' %>
+</div>
 <%= flash[:create] %>
 <%= flash[:update] %>
 <div class='container'>
@@ -38,45 +41,18 @@
               <%= link_to 'Destroy', @book, method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger"%>
               <% end %>
             </td>
-            <td>
-              <% if @book.favorited_by?(current_user) %>
-                <p>
-                  <%= link_to book_favorites_path(@book), method: :delete do %>
-                    ♥<%= @book.favorites.count %>
-                  <% end %>
-                </p>
-                <% else %>
-                <p>
-                  <%= link_to book_favorites_path(@book), method: :post do %>
-                    ♡<%= @book.favorites.count %>
-                  <% end %>
-                </p>
-              <% end %>
-                </p>
+            <td class="favorite-btn_<%= @book.id %>">
+              <%= render 'favorites/favorite-btn', book: @book %>
             </td>
-            <td>
-              <p>コメント件数：<%= @book.book_comments.count %></p>
+            <td id="comment_count">
+              <%= render "book_comments/count", book: @book %>
             </td>
           </tr>
       </table>
-          <div>
-                <% @book.book_comments.each do |book_comment| %>
-                  <p><%= image_tag book_comment.user.get_profile_image, size:"100x100" %></p>
-                  <%= link_to(book_comment.book) do %>
-                    <%= book_comment.user.name %>
-                  <% end %>
-      
-                  <%= book_comment.comment %>
-                  <% if book_comment.user == current_user %>
-                    <%= link_to 'Destroy', book_book_comment_path(book_comment.book, book_comment), method: :delete,  class: "btn btn-sm btn-danger"%>
-                  <% end %>
-                <% end %>
-          
-                  <%= form_with model: [@book, @book_comment] do |f| %>
-                    <%= f.text_area :comment, size:"90x5", placeholder: "コメントをここに" %><br>
-                    <%= f.submit "送信" %>
-                  <% end %>
-          </div>
+        <div id="comment_index">
+          <%= render "book_comments/index", book: @book %>
+        </div>
+        <%= render "book_comments/form", book: @book, book_comment: @book_comment %>
     </div>
   </div>
 </div>
